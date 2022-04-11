@@ -9,3 +9,11 @@
 - [Spring Cloud Config Docs](https://cloud.spring.io/spring-cloud-config/reference/html/)
 - [블로그 정리](https://wonit.tistory.com/502?category=854728)
 - [실습 소스코드](https://github.com/my-research/centralized-configuration-server)
+
+# Client
+
+- 요청
+
+```
+http://localhost:8888/{application}/{profile}/{label}
+```
