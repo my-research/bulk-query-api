@@ -1,3 +1,6 @@
+default:
+  message: "이것은 Prod 버전의 설정입니다"
+
 jwt:
   secret: "prod-123123"
 
