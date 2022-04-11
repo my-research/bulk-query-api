@@ -1,0 +1,5 @@
+trevari:
+  message: "안녕하세요 트레바리 테크유닛 입니다."
+
+jwt:
+  secret: "abcdefg123123"
