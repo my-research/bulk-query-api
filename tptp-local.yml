@@ -1,0 +1,8 @@
+jwt:
+  secret: "local-test-123123"
+
+spring:
+  datasource:
+    url: jdbc:localhost
+    username: local-user
+    password: local-user-pw

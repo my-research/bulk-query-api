@@ -1,0 +1,8 @@
+jwt:
+  secret: "prod-123123"
+
+spring:
+  datasource:
+    url: jdbc:rds.aws.resource.com
+    username: trevari-prod
+    password: ateams-something
