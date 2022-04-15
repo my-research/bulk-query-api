@@ -17,3 +17,61 @@
 ```
 http://localhost:8888/{application}/{profile}/{label}
 ```
+
+```java
+public class Application {
+
+  private final Console menuConsole = new MenuConsole();
+  private final GameFinder gameFinder = new GameFinder();
+
+  public static void main(String[] args) {
+    int gameNumber = menuConsole.queryGameNumber();
+
+    GameFinder finder = new GameFinder();
+    Game game = finder.findBy(inputGameNumber);
+
+    while(true) {
+      game.play();
+      int retry = menuConsole.queryRetry();
+    }
+
+  }
+}
+
+public class BaseballGame {
+
+  BaseballConsole console = new BaseballConsole();
+
+  public void play() {
+    while (playLoop()) {}
+  }
+
+  private boolean playLoop() {
+    int number = console.queryNumber();
+  }
+}
+
+public class Baseball {
+
+  List<Integer> myNumbers = new ArrayList();
+
+  public Result compare(UserShot userShot) {
+    List<Integer> numbers = userShot.getNumbers();
+
+    for (int i = 0; i < myNumbers; i++) {
+      numbers.get(i);
+    }
+  }
+}
+
+public class UserShot {
+  List<Integer> myNumbers = new ArrayList();
+
+  public
+}
+```
+
+# 일 잘하는 방법
+
+- 시간, 프로세스의 흐름에 의해서 설명하기보다 핵심을 먼저 이야기하고 뒤에서 받쳐주는 수식어를 통해서 핵심의 신뢰를 불어넣는다
+  - 일을 할 때는 목적과 효과에 대해서 계속해서 인지하자
