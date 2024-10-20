@@ -1,5 +1,6 @@
 package com.github.dhslrl321.bulkqueryapi
 
+import org.hibernate.type.AbstractType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.*
@@ -7,32 +8,36 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/persons/bulk")
 class GetPersonController(
-  private val service: BulkService
+    private val service: BulkService
 ) {
-  @GetMapping
-  fun getAllPersons(): List<Person> {
-    return service.getAll()
-  }
+    @PostMapping
+    fun getAllPersons(@RequestBody request: QueryRequest): ResponseEntity<Any> =
+        when (request.method) {
 
-  @PostMapping("/ids")
-  fun getAllPersonsBy(@RequestBody request: QueryRequest): ResponseEntity<Any> =
-    when (request.method) {
+            "DEFAULT" -> ok(service.getAll())
 
-      "DEFAULT" -> ok(service.getAllBy(request.ids))
+            "STREAM" -> ok(service.getAllAgeUnder40WithStream())
 
-      "CHUNK" -> ok(service.getAllByIdUsingChunk(request.ids))
+            "NON_STREAM" -> ok(service.getAllAgeUnder40WithoutStream())
 
-      "PROJECTION" -> ok(service.getAllById(request.ids))
+            else -> throw UnsupportedOperationException()
+        }
 
-      "STREAM" -> {
-        TODO()
-      }
+    @PostMapping("/ids")
+    fun getAllPersonsBy(@RequestBody request: QueryRequest): ResponseEntity<Any> =
+        when (request.method) {
 
-      else -> throw UnsupportedOperationException()
-    }
+            "DEFAULT" -> ok(service.getAllBy(request.ids!!))
+
+            "CHUNK" -> ok(service.getAllByIdUsingChunk(request.ids!!))
+
+            "PROJECTION" -> ok(service.getAllByIdNonCaching(request.ids!!))
+
+            else -> throw UnsupportedOperationException()
+        }
 }
 
 data class QueryRequest(
-  val method: String,
-  val ids: List<Long>
+    val method: String,
+    val ids: List<Long>?
 )

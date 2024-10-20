@@ -33,16 +33,18 @@ interface PersonDataRepository : JpaRepository<Person, Long> {
     """, nativeQuery = true)
     fun findByIdInUsingProjection(@Param("ids") ids: List<Long>): List<PersonIdNameOnly>
 
-    /*@Query("select u from Person u")
+    @Query("""
+        select p from person_data p
+    """)
     @QueryHints(value = [
-        QueryHint(name = HINT_FETCH_SIZE, value = "100000000"),
+        QueryHint(name = HINT_FETCH_SIZE, value = "10000"),
         QueryHint(name = HINT_CACHEABLE, value = "false"),
         QueryHint(name = READ_ONLY, value = "true")
         ])
-    fun findAllStream(): Stream<Person>*/
+    fun findAllUsingStream(): Stream<Person>
 }
 
 interface PersonIdNameOnly {
-    fun getId(): Long
-    fun getName(): String
+    val id: Long
+    val name: String
 }

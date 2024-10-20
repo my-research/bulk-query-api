@@ -1,14 +1,30 @@
 ### Get all persons
-GET http://localhost:8080/persons/bulk
+POST http://localhost:8080/persons/bulk
+Content-Type: application/json
 Accept: application/json
 
-###
+{
+  "method": "DEFAULT"
+}
 
-### Get all persons with stream
-GET http://localhost:8080/persons/bulk/with-stream
+### getAll 스트림 병렬 처리
+POST http://localhost:8080/persons/bulk
+Content-Type: application/json
 Accept: application/json
 
-###
+{
+  "method": "STREAM"
+}
+
+### getAll list 처리
+POST http://localhost:8080/persons/bulk
+Content-Type: application/json
+Accept: application/json
+
+{
+  "method": "NON_STREAM"
+}
+
 
 ### Get persons by IDs
 POST http://localhost:8080/persons/bulk/ids
