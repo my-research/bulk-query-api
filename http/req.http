@@ -1,0 +1,41 @@
+### Get all persons
+GET http://localhost:8080/persons/bulk
+Accept: application/json
+
+###
+
+### Get all persons with stream
+GET http://localhost:8080/persons/bulk/with-stream
+Accept: application/json
+
+###
+
+### Get persons by IDs
+POST http://localhost:8080/persons/bulk/ids
+Content-Type: application/json
+Accept: application/json
+
+{
+  "method": "DEFAULT",
+  "ids": [1, 2, 3, 4, 5]
+}
+
+### Get persons by IDs
+POST http://localhost:8080/persons/bulk/ids
+Content-Type: application/json
+Accept: application/json
+
+{
+  "method": "CHUNK",
+  "ids": [1, 2, 3, 4, 5]
+}
+
+### Get persons by IDs
+POST http://localhost:8080/persons/bulk/ids
+Content-Type: application/json
+Accept: application/json
+
+{
+  "method": "PROJECTION",
+  "ids": [6, 7, 8, 9, 10]
+}

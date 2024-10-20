@@ -1,10 +1,7 @@
 package com.github.dhslrl321.bulkqueryapi
 
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -37,7 +34,7 @@ class BulkQueryApiApplicationTests {
             url,
             HttpMethod.POST,
             requestEntity,
-            Array<PersonData>::class.java
+            Array<Person>::class.java
         )
 
         val actual = responseEntity.body!!

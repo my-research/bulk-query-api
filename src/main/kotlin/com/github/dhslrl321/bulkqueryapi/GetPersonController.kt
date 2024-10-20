@@ -1,36 +1,38 @@
 package com.github.dhslrl321.bulkqueryapi
 
+import org.springframework.http.ResponseEntity
+import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/persons/bulk")
 class GetPersonController(
-private val repository: PersonDataRepository
+  private val service: BulkService
 ) {
-    @GetMapping
-    fun getAllPersons(): List<PersonData> {
-        return repository.findAll()
-    }
+  @GetMapping
+  fun getAllPersons(): List<Person> {
+    return service.getAll()
+  }
 
-    @PostMapping("/ids")
-    fun getAllPersonsBy(@RequestBody body: Map<String, List<Int>>): List<PersonData> {
-        return repository.findAllByIdIn(body["ids"]!!)
-    }
+  @PostMapping("/ids")
+  fun getAllPersonsBy(@RequestBody request: QueryRequest): ResponseEntity<Any> =
+    when (request.method) {
 
-    @PostMapping("/ids/2")
-    fun getAllPersonsBy2(@RequestBody body: Map<String, List<Int>>): List<PersonData> {
-        val ids = body["ids"] ?: return emptyList()  // ids가 null일 경우 빈 리스트 반환
+      "DEFAULT" -> ok(service.getAllBy(request.ids))
 
-        val batchSize = 10_000  // 한 번에 처리할 ID의 개수
-        val resultList = mutableListOf<PersonData>()
+      "CHUNK" -> ok(service.getAllByIdUsingChunk(request.ids))
 
-        // ids를 1만 개씩 나누어 처리
-        ids.chunked(batchSize).forEach { batch ->
-            // 각 배치에 대해 쿼리 실행 후 결과를 추가
-            val batchResult = repository.findAllByIdIn(batch)
-            resultList.addAll(batchResult)
-        }
+      "PROJECTION" -> ok(service.getAllById(request.ids))
 
-        return resultList
+      "STREAM" -> {
+        TODO()
+      }
+
+      else -> throw UnsupportedOperationException()
     }
 }
+
+data class QueryRequest(
+  val method: String,
+  val ids: List<Long>
+)
