@@ -4,8 +4,9 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class BulkService(
-    private val repository: PersonDataRepository
+class BulkQueryService(
+    private val repository: PersonDataRepository,
+    private val optimizingRepository: UserQueryOptimizer
 ) {
 
     // TODO streaming 추가
@@ -38,7 +39,7 @@ class BulkService(
             resultList.addAll(batchResult)
         }
 
-        return repository.findAllByIdIn(id)
+        return resultList
     }
 
     /**
@@ -73,5 +74,9 @@ class BulkService(
             .map {
                 it.copy(name = "young ${it.name}")
             }.toList()
+    }
+
+    fun getAllByUserIdUsingTempJoin(id: List<Long>): List<Person> {
+        return optimizingRepository.findAllBy(id)
     }
 }

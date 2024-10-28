@@ -1,6 +1,5 @@
 package com.github.dhslrl321.bulkqueryapi
 
-import org.hibernate.type.AbstractType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.*
@@ -8,7 +7,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/persons/bulk")
 class GetPersonController(
-    private val service: BulkService
+    private val service: BulkQueryService
 ) {
     @PostMapping
     fun getAllPersons(@RequestBody request: QueryRequest): ResponseEntity<Any> =
@@ -32,6 +31,8 @@ class GetPersonController(
             "CHUNK" -> ok(service.getAllByIdUsingChunk(request.ids!!))
 
             "PROJECTION" -> ok(service.getAllByIdNonCaching(request.ids!!))
+
+            "TEMP_TABLE_JOIN" -> ok(service.getAllByUserIdUsingTempJoin(request.ids!!))
 
             else -> throw UnsupportedOperationException()
         }

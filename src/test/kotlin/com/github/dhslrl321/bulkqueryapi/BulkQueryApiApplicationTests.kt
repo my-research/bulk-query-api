@@ -14,32 +14,31 @@ class BulkQueryApiApplicationTests {
 
     @Test
     fun call() {
-        val headers = HttpHeaders()
-        headers.contentType = MediaType.APPLICATION_JSON
+        val headers = HttpHeaders().apply { contentType = MediaType.APPLICATION_JSON }
+        val ids = (1..3_000_000).toList()  // 1부터 500,000까지의 userId 생성
+        val requestEntity = HttpEntity(mapOf("method" to "TEMP_TABLE_JOIN", "ids" to ids), headers)
 
-        // 1부터 500,000까지의 userId 생성
-        val ids = (1..452_000).toList()
-
-        // 요청 body 생성
-        val requestBody = mapOf("ids" to ids)
-
-        // HttpEntity로 요청 생성
-        val requestEntity = HttpEntity(requestBody, headers)
-
-        // 요청을 보낼 URL
-        val url = "http://localhost:8080/persons/bulk/ids/2"
-
-        // 요청을 보내고 결과를 받음
-        val responseEntity = rest.exchange(
-            url,
-            HttpMethod.POST,
+        val responseEntity = rest.postForEntity(
+            "http://localhost:8080/persons/bulk/ids",
             requestEntity,
             Array<Person>::class.java
         )
 
-        val actual = responseEntity.body!!
-        assertThat(actual.size).isEqualTo(452_000)
+        assertThat(responseEntity.body!!.size).isEqualTo(3_000_000)
     }
 
+    @Test
+    fun call2() {
+        val headers = HttpHeaders().apply { contentType = MediaType.APPLICATION_JSON }
+        val ids = (1..3_000_000).toList()  // 1부터 500,000까지의 userId 생성
+        val requestEntity = HttpEntity(mapOf("method" to "CHUNK", "ids" to ids), headers)
 
+        val responseEntity = rest.postForEntity(
+            "http://localhost:8080/persons/bulk/ids",
+            requestEntity,
+            Array<Person>::class.java
+        )
+
+        assertThat(responseEntity.body!!.size).isEqualTo(3_000_000)
+    }
 }

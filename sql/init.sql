@@ -24,7 +24,7 @@ CREATE TABLE person_data
 -- Step 4: generate_series를 사용하여 100만 개의 데이터 삽입
 WITH tmp AS (
     SELECT
-        generate_series(1, 1000000) AS id,  -- 1부터 100만까지의 id 생성
+        generate_series(1, 5000000) AS id,  -- 1부터 100만까지의 id 생성
         (random() * 4 + 1)::integer AS idx, -- 랜덤한 이름을 선택하기 위한 인덱스 (1-5)
         (random() * 79 + 1)::integer AS age -- 랜덤한 나이 생성 (1-80)
 )
@@ -35,3 +35,8 @@ SELECT tmp.id,
        (SELECT name FROM names WHERE names.id = tmp.idx) AS name,
        tmp.age
 FROM tmp;
+
+---
+CREATE TABLE tmp_user_ids (
+    user_id BIGINT
+);

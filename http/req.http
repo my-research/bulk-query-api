@@ -55,3 +55,13 @@ Accept: application/json
   "method": "PROJECTION",
   "ids": [6, 7, 8, 9, 10]
 }
+
+### Get persons by IDs
+POST http://localhost:8080/persons/bulk/ids
+Content-Type: application/json
+Accept: application/json
+
+{
+  "method": "TEMP_TABLE_JOIN",
+  "ids": [6, 7, 8, 9, 10]
+}
